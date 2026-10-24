@@ -1,66 +1,130 @@
-# ✨ WebViSE: Scaling Visual Design Intelligence for LLMs from the Open Web
+<div align="center">
 
-## ✨ Release code
+# WebViSE
 
-**[Start with the release-code guide](./release_code/README.md)**
+### Scaling Visual Design Intelligence from the Open Web for LLM Website Generation
 
-The release code covers the paper-aligned Website-Derived Visual Skill Construction and Query-Induced Joint Skill DAG Evolution pipelines, together with the Plug-and-Play Website Query Production utility. The guide provides runnable entry points, API configuration, execution steps, and input/output contracts.
+**Turn implemented web experiences into reusable Visual Skills.**
 
-The repository also provides the frozen artifacts required by the released workflows:
+<p>
+  <a href="https://web-skill-dag.github.io/Web_SKill_DAG/showcase/"><img src="https://img.shields.io/badge/Live%20Demos-16%20Website%20Comparisons-0E9384?style=for-the-badge" alt="Explore 16 interactive website comparisons"></a>
+  <a href="./release_code/README.md"><img src="https://img.shields.io/badge/Quick%20Start-Run%20WebViSE-5263D6?style=for-the-badge" alt="Run WebViSE"></a>
+</p>
 
-- [`initial_visual_skill_library/`](./initial_visual_skill_library/) contains the initial 864 unique Skills organized into 11 root Categories with 943 Category-to-Skill memberships.
-- [`final_evolved_skill_dag/`](./final_evolved_skill_dag/) contains the final recursive DAG (`graph.json`) and its complete Skill documents (`skills.jsonl`). The released graph has 163 nodes and 858 active Skills after verified merges.
+<table>
+<tr>
+<td align="center" width="33%"><a href="./initial_visual_skill_library/"><strong>Visual Skill Library</strong></a><br><sub>864 reusable Skills from implemented websites</sub><br><br><a href="./initial_visual_skill_library/"><img src="https://img.shields.io/badge/Explore-Visual%20Skills-F2B35E?style=flat-square" alt="Explore the Visual Skill library"></a></td>
+<td align="center" width="33%"><a href="./final_evolved_skill_dag/"><strong>Evolved Skill DAG</strong></a><br><sub>Structured access to complete Skill documents</sub><br><br><a href="./final_evolved_skill_dag/"><img src="https://img.shields.io/badge/Explore-Skill%20DAG-9D8AD1?style=flat-square" alt="Explore the evolved Skill DAG"></a></td>
+<td align="center" width="33%"><a href="./release_code/README.md"><strong>Reproduce the Pipeline</strong></a><br><sub>Construction, joint evolution, and retrieval</sub><br><br><a href="./release_code/README.md"><img src="https://img.shields.io/badge/Read-Release%20Guide-69B5A4?style=flat-square" alt="Read the release-code guide"></a></td>
+</tr>
+</table>
 
-## ▶️ Play now!
+### [▶ Explore the interactive website gallery](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/)
 
-Export an OpenAI-compatible Chat Completions endpoint, its API key, and the model served by that endpoint. Then pass one website request with `--query`:
+Compare **No Skill**, **General Website Design Skill**, and **WebViSE** under the same instruction and generator.
+
+[![WebViSE introduces concrete visual and interaction mechanisms into a World Cup website](./assets/webvise-comparison.png)](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/)
+
+</div>
+
+WebViSE extracts visual and interaction mechanisms from implemented websites, abstracts them into reusable **Visual Skills**, and organizes them in a **multi-parent Skill DAG**. Retrieved Skills give website generators concrete design knowledge for new instructions. Skill-guided teacher implementations can also transfer this knowledge into a generator through supervised fine-tuning.
+
+> **Explore the interactive designs.** Open the [live gallery](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/) to inspect the motion, controls, and interaction details in 16 controlled comparisons.
+
+## At a glance
+
+| Source websites | Initial Visual Skills | Root Categories | Qualitative comparisons |
+| :---: | :---: | :---: | :---: |
+| **850** | **864** | **11** | **16** |
+
+The initial library contains **943 Category-to-Skill memberships**. A Skill may belong to several Categories because one mechanism can support several design roles.
+
+## How WebViSE works
+
+![Overview of Visual Skill construction, query-induced joint evolution, and visual design intelligence transfer](./assets/webvise-overview.png)
+
+1. **Extract reusable visual mechanisms.** Complementary Intent and Observable Behavior Views connect a website’s purpose to its visible experience. Source-grounded construction recovers the implementation mechanism and writes a transferable `SKILL.md` document.
+2. **Evolve the Skills and their retrieval structure together.** Skill-conditioned Potential Queries exercise the DAG through multi-path routing and full-document review. Diagnosis guides revisions to Skill descriptions, routing nodes, and memberships.
+3. **Transfer the visual knowledge.** Use retrieved Skills as plug-and-play guidance, or synthesize Skill-guided teacher implementations and pair them with the original instructions for supervised fine-tuning.
+
+The released code provides runnable workflows for **Visual Skill construction**, **joint Skill–DAG evolution**, and **plug-and-play instruction augmentation**. See the [release-code guide](./release_code/README.md) for each workflow’s configuration and input/output contracts.
+
+## Quick start
+
+### 1. Install the dependencies
+
+Use Python **3.10 or later** in an isolated environment:
+
+```bash
+git clone https://github.com/guangnianyuji/WebViSE.git
+cd WebViSE
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r release_code/requirements.txt
+```
+
+### 2. Retrieve Visual Skills for one instruction
+
+Configure an OpenAI-compatible Chat Completions endpoint:
 
 ```bash
 export BASE_URL="https://your-api.example.com/v1/chat/completions"
-export API_KEY="sk-your-api-key"
+export API_KEY="your-api-key"
 export MODEL="your-model"
 
-bash release_code/play.sh \
-  --query "Design a bold, futuristic recruitment poster for a technology company hiring software engineers."
+bash release_code/play.sh --query "Create an interactive World Cup page with a cinematic hero, live standings, and highlight replays."
 ```
 
-The command retrieves Visual Skills from the released evolved Skill DAG and prints the expanded Query directly to standard output.
+The command retrieves applicable Visual Skills from the released evolved DAG and prints an **augmented website instruction** to standard output. Pass that instruction to your website generator to build the page.
 
-## 🎨 Website showcase
+For the full construction and evolution workflows, fill in the provided `release_code/api_config.sh` and follow the [detailed setup instructions](./release_code/README.md).
 
-**[Open the full interactive gallery](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/)**
+## Explore the live comparisons
 
-We present 16 qualitative cases of Visual Skill selection and application. For each case, we report the selected Skills and compare websites generated under three settings: **No Skill**, **General Website Design Skill**, and **Website-Derived Visual Skill**.
+The qualitative gallery fixes the **original instruction and generator** within each case while varying the visual guidance.
 
-These cases show what was selected and how the website generator applied it. They are separate from the distilled-model results presented later in the paper. Use **Last**, **Next**, the case dropdown, or the keyboard arrow keys to move through the comparisons. Every preview is live and can be opened independently.
+| Experience | What to explore |
+| --- | --- |
+| [16-case website gallery](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/) | Live three-way comparisons spanning promotional pages, dashboards, interactive editors, and 3D experiences. |
+| [Plug-and-play case study](https://web-skill-dag.github.io/Web_SKill_DAG/case_study/) | The Guoqing Temple task, comparing the original instruction with retrieved Visual Skill guidance. |
+| [Internalization case study](https://web-skill-dag.github.io/Web_SKill_DAG/internalization-case-study/) | Four conditions on the same Pointer Lab task: Base, +WebViSE, NoSkill-SFT, and WebViSE-SFT. |
 
-| Direct comparison | Case | Task | Visual Skill | No Skill | General Skill | Visual Skill Result |
-|---|---:|---|---|---|---|---|
-| [Open Case 01](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-01) | 01 | World Cup Live Experience | Stock Ticker Dashboard; Orken; Scroll-Synced Video; Fullscreen Clip Animation | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-01/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-01/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-01/ours/) |
-| [Open Case 02](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-02) | 02 | Marketing Course Landing Page | Background Image Grid Motion | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-02/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-02/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-02/ours/) |
-| [Open Case 03](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-03) | 03 | Premium Auto Parts | Apple-Style 3D Product Explode | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-03/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-03/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-03/ours/) |
-| [Open Case 04](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-04) | 04 | Pattern Pinboard | Stack Motion Hover Effects | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-04/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-04/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-04/ours/) |
-| [Open Case 05](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-05) | 05 | Windows XP Desktop | Liquid Effect | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-05/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-05/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-05/ours/) |
-| [Open Case 06](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-06) | 06 | Aquarium Dashboard | Surf Report Template | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-06/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-06/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-06/ours/) |
-| [Open Case 07](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-07) | 07 | Wind Farm Monitor | Interactive 3D Mall Map | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-07/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-07/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-07/ours/) |
-| [Open Case 08](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-08) | 08 | Fitness Planner | Music Player Component | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-08/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-08/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-08/ours/) |
-| [Open Case 09](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-09) | 09 | Personal Finance Dashboard | Animated Border Cards | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-09/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-09/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-09/ours/) |
-| [Open Case 10](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-10) | 10 | Origami Instruction Studio | Three.js Matcap Demo | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-10/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-10/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-10/ours/) |
-| [Open Case 11](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-11) | 11 | Bouncing Ball Physics | Theatre.js Dynamic Visuals | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-11/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-11/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-11/ours/) |
-| [Open Case 12](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-12) | 12 | 3D Flame Simulation | Waves | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-12/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-12/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-12/ours/) |
-| [Open Case 13](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-13) | 13 | Underwater Coral Reef | Aurelia | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-13/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-13/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-13/ours/) |
-| [Open Case 14](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-14) | 14 | Intermittent Geyser | X-Ray Visualizer | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-14/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-14/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-14/ours/) |
-| [Open Case 15](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-15) | 15 | 5x5x5 Rubik's Cube | Ball of Glass with Attraction | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-15/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-15/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-15/ours/) |
-| [Open Case 16](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/#case-16) | 16 | Interactive 3D Earth | Interactive 3D Device Showcase | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-16/no-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-16/general-skill/) | [Open](https://web-skill-dag.github.io/Web_SKill_DAG/showcase/cases/case-16/ours/) |
+<details>
+<summary><strong>What is included in the 16-case gallery?</strong></summary>
 
-## 🚀 Case Study 1: Plug-and-Play Website Generation
+World Cup Live Experience · Marketing Course Landing Page · Premium Auto Parts · Pattern Pinboard · Windows XP Desktop · Aquarium Dashboard · Wind Farm Monitor · Fitness Planner · Personal Finance Dashboard · Origami Instruction Studio · Bouncing Ball Physics · 3D Flame Simulation · Underwater Coral Reef · Intermittent Geyser · Rubik’s Cube · Interactive 3D Earth.
 
-**[Open the Guoqing Temple comparison](https://web-skill-dag.github.io/Web_SKill_DAG/case_study/)**
+Each comparison reports the selected Visual Skills and lets you open the generated websites independently.
 
-This side-by-side case study compares the Base setting with WebViSE under the same website-generation model and original user instruction. WebViSE retrieves applicable Visual Skills through the evolved Skill DAG and combines them with the original instruction as plug-and-play guidance. Both generated websites are live and can also be opened independently.
+</details>
 
-## 🧠 Case Study 2: Intelligence Internalization
+## Evaluation highlights
 
-**[Open the Pointer Lab four-way comparison](https://web-skill-dag.github.io/Web_SKill_DAG/internalization-case-study/)**
+The paper evaluates generation on **WebGen-Bench**, **MiniAppBench**, and the **website subset of Cookie-Bench**, alongside blinded human comparisons and frozen Internal/External Skill-retrieval benchmarks.
 
-This case study illustrates intelligence internalization through Skill-augmented training on the same five-experiment Pointer Lab task. It compares four conditions: Qwen3.8-27B with the original Query, Qwen3.8-27B+WebViSE with plug-and-play Skill guidance, Qwen3.8-27B NoSkill-SFT with the original Query at inference time, and Qwen3.8-27B WebViSE-SFT with the original Query at inference time. All four generated websites are interactive and can be opened independently.
+- **Scalable retrieval:** with Qwen3.8-Max, the evolved DAG uses **39.09%** of Flat LLM’s estimated retrieval cost while improving the reported retrieval quality.
+- **Transfer across generators:** Visual Skills can augment both closed-source and open-weight website generators.
+- **Internalization:** Skill-guided training is compared with a matched NoSkill-SFT control using the same instruction collection and teacher.
+
+<p align="center">
+  <img src="./assets/webvise-human-evaluation.png" alt="Blinded human pairwise preferences between Base and WebViSE website generation" width="780">
+</p>
+
+## Repository contents
+
+| Path | Contents |
+| --- | --- |
+| [`release_code/`](./release_code/) | Runnable construction, evolution, and plug-and-play workflows; shared retrieval and model-facing prompts. |
+| [`initial_visual_skill_library/`](./initial_visual_skill_library/) | The initial 864 unique Skills organized into 11 root Categories. |
+| [`final_evolved_skill_dag/`](./final_evolved_skill_dag/) | The released recursive `graph.json` and full Skill documents in `skills.jsonl`. |
+| [`showcase/`](./showcase/) | The 16-case interactive comparison gallery. |
+| [`case_study/`](./case_study/) | The plug-and-play website-generation case study. |
+| [`internalization-case-study/`](./internalization-case-study/) | Interactive websites for the four-way internalization comparison. |
+| [`assets/`](./assets/) | Paper figures used in this README. |
+
+The **released DAG snapshot** contains **163 nodes and 858 active Skills** after verified merges. These describe the released artifacts; they should be distinguished from the initial library and other evolution checkpoints.
+
+## Contact
+
+For questions about the release, open an issue or contact [guangnianyuji](https://github.com/guangnianyuji) at [2509090807@qq.com](mailto:2509090807@qq.com).
+
